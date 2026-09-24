@@ -1,15 +1,17 @@
-export type SlicerId = 'flash-studio' | 'orca-slicer' | 'bambu-studio' | 'custom-post';
+export type SlicerId = 'flash-studio' | 'orca-slicer' | 'bambu-studio' | 'custom-post' | string;
 
 export interface SlicerProfile {
   id: SlicerId;
   name: string;
-  version: string;
-  badge: string;
-  icon: string;
+  version?: string;
+  badge?: string;
+  icon?: string;
   isLocked?: boolean;
-  fileExtension: string;
-  supportsNativePA: boolean;
+  isDefault?: boolean;
+  fileExtension?: string;
+  supportsNativePA?: boolean;
   notes?: string;
+  adapterId?: string;
 }
 
 export interface PrinterProfile {
@@ -22,10 +24,37 @@ export interface PrinterProfile {
   buildVolumeX: number; // e.g. 220
   buildVolumeY: number; // e.g. 220
   buildVolumeZ: number; // e.g. 220
-  firmware: string; // e.g. 'Klipper Direct v1.2.8 KLP'
-  mcuSerial?: string;
+  firmware?: string;
   notes?: string;
   isDefault?: boolean;
+
+  // Future catalog architecture fields (optional, backward compatible)
+  source?: 'user' | 'catalog' | 'preset';
+  sourceId?: string;
+  vendorId?: string;
+  modelId?: string;
+  variantId?: string;
+}
+
+// Future Public / Local Catalog Data Architecture
+export interface CatalogPrinterVariant {
+  id: string;
+  name: string; // e.g. 'Standard', 'Plus', 'Max'
+  buildVolumeX: number;
+  buildVolumeY: number;
+  buildVolumeZ: number;
+  defaultNozzleDiameter: number;
+  supportedNozzles?: number[];
+  kinematics?: string;
+  bedType?: string;
+}
+
+export interface CatalogPrinterModel {
+  id: string;
+  vendorId: string;
+  manufacturer: string;
+  model: string;
+  variants: CatalogPrinterVariant[];
 }
 
 export interface FilamentProfile {

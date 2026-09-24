@@ -38,7 +38,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, onOpenTest, o
       <div className="flex items-center justify-between pt-1">
         <div>
           <span className="font-mono text-[11px] text-primary uppercase font-semibold block">
-            // TELEMETRY LOG
+            // {t('nav.history').toUpperCase()}
           </span>
           <h1 className="font-headline text-[22px] font-bold text-on-surface">
             {t('history.title')}

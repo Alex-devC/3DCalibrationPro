@@ -163,7 +163,7 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
       reader.onload = (event) => {
         if (event.target?.result) {
           setPhotoUrl(event.target.result as string);
-          showToast('Foto atualizada!');
+          showToast(t('common.saved'));
         }
       };
       reader.readAsDataURL(file);
@@ -179,15 +179,15 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
           onClick={onBackToWorkflow}
           className="flex items-center gap-1.5 text-on-surface-variant font-mono text-[12px] hover:text-primary transition-colors"
         >
-          <span className="text-outline uppercase">TESTS</span>
+          <span className="text-outline uppercase">{t('calibrate.benched')}</span>
           <span className="material-symbols-outlined text-[14px]">chevron_right</span>
           <span className="text-primary font-bold tracking-wide uppercase">
-            CAL-01 // MAX VOLUMETRIC SPEED
+            CAL-01 // {t('calibration.mvsTitle').toUpperCase()}
           </span>
         </button>
         <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high border border-primary/20">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
-          <span className="font-mono text-[10px] text-primary uppercase">ACTIVE SESSION</span>
+          <span className="font-mono text-[10px] text-primary uppercase">{t('calibrate.workflowActive')}</span>
         </div>
       </div>
 
@@ -196,25 +196,25 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
         <div className="flex items-center justify-between pb-1 border-b border-surface-container-high/60">
           <span className="font-mono text-[11px] text-outline uppercase tracking-wider flex items-center gap-1">
             <span className="material-symbols-outlined text-[16px] text-secondary">memory</span>
-            Hardware Context
+            {t('history.hardware')}
           </span>
           <span className="font-mono text-[10px] text-secondary uppercase bg-surface-container-highest px-1.5 py-0.5 rounded border border-secondary/20">
-            SYNCED
+            {t('calibrate.linked')}
           </span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div className="bg-surface-container p-2 rounded flex flex-col border border-surface-container-high">
-            <span className="font-mono text-[9px] text-outline uppercase">SLICER</span>
+            <span className="font-mono text-[9px] text-outline uppercase">{t('history.slicer').toUpperCase()}</span>
             <span className="font-semibold text-[13px] text-on-surface truncate">{activeSlicer.name}</span>
           </div>
           <div className="bg-surface-container p-2 rounded flex flex-col border border-surface-container-high">
-            <span className="font-mono text-[9px] text-outline uppercase">PRINTER</span>
+            <span className="font-mono text-[9px] text-outline uppercase">{t('printer.title').toUpperCase()}</span>
             <span className="font-semibold text-[13px] text-primary truncate">
-              {activePrinter.model.replace('Flashforge ', '')} ({activePrinter.nozzleDiameter.toFixed(1)}mm)
+              {activePrinter.model} ({activePrinter.nozzleDiameter.toFixed(1)}mm)
             </span>
           </div>
           <div className="bg-surface-container p-2 rounded flex flex-col border border-surface-container-high">
-            <span className="font-mono text-[9px] text-outline uppercase">FILAMENT</span>
+            <span className="font-mono text-[9px] text-outline uppercase">{t('filament.title').toUpperCase()}</span>
             <span className="font-semibold text-[13px] text-secondary truncate">{activeFilament.name}</span>
           </div>
         </div>
@@ -453,9 +453,9 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
           <div className="flex items-center gap-2">
             <div className="px-2.5 py-1 rounded-full bg-surface-container-highest text-secondary flex items-center gap-1.5 font-mono text-[11px] font-bold border border-secondary/20">
               <span className="w-2 h-2 rounded-full bg-secondary"></span>
-              CALIBRATED
+              {t('master.calibratedTag')}
             </div>
-            <span className="font-mono text-[11px] text-outline">// FLUID DYNAMICS</span>
+            <span className="font-mono text-[11px] text-outline">// {t('tests.mvs.volumetricDetermination').toUpperCase()}</span>
           </div>
           <button
             type="button"
@@ -464,7 +464,7 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
             className="text-outline hover:text-primary transition-colors flex items-center gap-1 font-mono text-[11px]"
           >
             <span className="material-symbols-outlined text-[15px]">content_copy</span>
-            <span>COPY</span>
+            <span>{t('manualGuide.copy')}</span>
           </button>
         </div>
 
@@ -481,7 +481,7 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
             </span>
           </div>
           <span className="font-mono text-[11px] text-on-surface-variant">
-            Hotend Flow Rate Ceiling ({activePrinter.model.replace('Flashforge ', '')} Nozzle {activePrinter.nozzleDiameter.toFixed(1)}mm)
+            {activePrinter.model} ({activePrinter.nozzleDiameter.toFixed(1)}mm)
           </span>
         </div>
 
@@ -495,7 +495,7 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
             {result.formula}
           </div>
           <div className="font-mono text-[12px] text-primary">
-            Calculation: {result.formulaDerivation}
+            {result.formulaDerivation}
           </div>
         </div>
 
@@ -560,7 +560,7 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
               {t('tests.mvs.technicianNotes')}
             </label>
             <span className="font-mono text-[10px] text-outline">
-              NOZZLE TEMP: {activeFilament.recommendedNozzleTempMin + 5}°C
+              {t('filament.nozzleTemp').toUpperCase()}: {activeFilament.recommendedNozzleTempMin + 5}°C
             </span>
           </div>
           <textarea
@@ -578,9 +578,9 @@ export const MvsCalibrationView: React.FC<MvsCalibrationViewProps> = ({
       <div className="w-full bg-surface-container-high rounded-xl p-2.5 flex items-center justify-between border border-surface-container-highest shadow-sm">
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-outline text-[18px]">verified</span>
-          <span className="font-mono text-[10px] text-outline tracking-wider">CERTIFIED SPEED COMPATIBLE</span>
+          <span className="font-mono text-[10px] text-outline tracking-wider">{t('master.calibrationRig')}</span>
         </div>
-        <span className="font-mono text-[11px] text-primary">FLASHFORGE HIGH-FLOW DOCK</span>
+        <span className="font-mono text-[11px] text-primary">{activePrinter.manufacturer.toUpperCase()}</span>
       </div>
 
       {/* Sticky Contextual Workbench Action Hub */}

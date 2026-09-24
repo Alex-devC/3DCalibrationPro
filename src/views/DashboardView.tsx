@@ -9,6 +9,9 @@ interface DashboardViewProps {
   activeSlicer: SlicerProfile;
   calibrationItems: CalibrationItem[];
   recentHistory: CalibrationResult[];
+  userName?: string;
+  totalPrintersCount?: number;
+  totalFilamentsCount?: number;
   onStartCalibration: () => void;
   onOpenTest: (testType: string) => void;
   onSwitchRig: () => void;
@@ -22,6 +25,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   activeSlicer,
   calibrationItems,
   recentHistory,
+  userName,
+  totalPrintersCount,
+  totalFilamentsCount,
   onStartCalibration,
   onOpenTest,
   onSwitchRig,
@@ -30,10 +36,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 }) => {
   const { t } = useI18n();
 
+  const currentUserName = userName || 'Operador';
   const calibratedCount = calibrationItems.filter((i) => i.status === 'CALIBRATED').length;
   const manualCount = calibrationItems.filter((i) => i.status === 'MANUALLY_DEFINED').length;
   const totalItems = calibrationItems.length || 6;
   const percentage = Math.round(((calibratedCount + manualCount) / totalItems) * 100);
+
+  const displayTestsCount = String(recentHistory.length).padStart(2, '0');
+  const displayPrintersCount = String(totalPrintersCount ?? 3).padStart(2, '0');
+  const displayFilamentsCount = String(totalFilamentsCount ?? 3).padStart(2, '0');
+  const displayMasterCount = '01';
 
   return (
     <div className="flex flex-col w-full max-w-2xl mx-auto px-4 space-y-4 pt-3 pb-28">
@@ -47,15 +59,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </span>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-primary font-mono text-[11px] border border-primary/20 shadow-sm">
-            <span className="material-symbols-outlined text-[13px]">cloud_off</span>
-            <span>{t('dashboard.stationOnline').includes('Local') ? '100% OFFLINE ACTIVE' : '100% OFFLINE ATIVO'}</span>
+            <span className="material-symbols-outlined text-[13px]">database</span>
+            <span>{t('dashboard.dbCached')}</span>
           </div>
         </div>
 
         <div className="flex items-baseline justify-between mt-1">
           <div>
             <h1 className="font-headline text-[24px] font-bold text-on-surface tracking-tight">
-              {t('dashboard.welcome')}
+              {t('dashboard.welcome', { userName: currentUserName })}
             </h1>
             <p className="text-[13px] text-on-surface-variant">
               {t('dashboard.telemetryLoaded')}
@@ -196,8 +208,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
 
             <div className="flex items-center justify-between text-on-surface-variant font-mono text-[10px]">
-              <span>Flow, MVS, Temp, Retract: Locked</span>
-              <span className="text-secondary">PA: Tuning • Fan: Pending</span>
+              <span>{t('dashboard.pipelineStatusLocked')}</span>
+              <span className="text-secondary">{t('dashboard.pipelineStatusPending')}</span>
             </div>
           </div>
         </div>
@@ -236,7 +248,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <span className="material-symbols-outlined text-primary text-[18px]">verified</span>
             </div>
             <div>
-              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">28</div>
+              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">{displayTestsCount}</div>
               <div className="font-mono text-[11px] text-on-surface-variant mt-1">
                 {t('dashboard.testsCompleted')}
               </div>
@@ -252,7 +264,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <span className="material-symbols-outlined text-secondary text-[18px]">print</span>
             </div>
             <div>
-              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">03</div>
+              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">{displayPrintersCount}</div>
               <div className="font-mono text-[11px] text-on-surface-variant mt-1">
                 {t('dashboard.activeUnits')}
               </div>
@@ -268,7 +280,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <span className="material-symbols-outlined text-tertiary text-[18px]">grain</span>
             </div>
             <div>
-              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">08</div>
+              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">{displayFilamentsCount}</div>
               <div className="font-mono text-[11px] text-on-surface-variant mt-1">
                 {t('dashboard.spoolProfiles')}
               </div>
@@ -284,7 +296,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <span className="material-symbols-outlined text-primary text-[18px]">folder_special</span>
             </div>
             <div>
-              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">05</div>
+              <div className="font-mono text-[24px] font-bold text-on-surface leading-none">{displayMasterCount}</div>
               <div className="font-mono text-[11px] text-on-surface-variant mt-1">
                 {t('dashboard.compiledProfiles')}
               </div>
@@ -452,11 +464,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </section>
 
-      {/* Discreet Monitized Ad Banner (Interactive specification card) */}
-      <AdBanner variant="interactive" />
-
-      {/* Reserve ad banner slot at bottom */}
-      <AdBanner variant="reserve" />
+      {/* Discreet Monitized Adsterra Banner */}
+      <AdBanner className="mt-4" />
     </div>
   );
 };

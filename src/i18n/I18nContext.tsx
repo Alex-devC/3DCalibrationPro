@@ -28,14 +28,10 @@ function getInitialLanguage(): SupportedLanguage {
     if (saved === 'pt-BR' || saved === 'en-US') {
       return saved;
     }
-    const browserLang = navigator.language || '';
-    if (browserLang.toLowerCase().startsWith('en')) {
-      return 'en-US';
-    }
   } catch {
     // fallback
   }
-  // Portuguese (Brazil) must be the default fallback
+  // Portuguese (Brazil) is the default language for the application
   return 'pt-BR';
 }
 

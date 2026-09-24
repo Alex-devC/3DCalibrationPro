@@ -24,9 +24,13 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
   slicers,
   activeSlicer,
   onSelectSlicer,
+  printers,
   activePrinter,
+  onSelectPrinter,
   onAddNewPrinter,
+  filaments,
   activeFilament,
+  onSelectFilament,
   onAddNewFilament,
   calibrationItems,
   onOpenTest,
@@ -225,6 +229,26 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
 
         {/* Selected Printer Card */}
         <div className="p-3 rounded-lg bg-surface-container-highest border border-surface-container-high flex flex-col gap-3">
+          {/* Quick Printer Switcher if multiple printers exist */}
+          {printers && printers.length > 1 && (
+            <div className="flex flex-col gap-1 pb-1 border-b border-surface-container-high/60">
+              <label className="font-mono text-[10px] text-outline uppercase font-semibold">
+                {t('calibrate.selectPrinter')}
+              </label>
+              <select
+                value={activePrinter.id}
+                onChange={(e) => onSelectPrinter(e.target.value)}
+                className="w-full h-10 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[12px] text-on-surface focus:outline-none focus:border-primary"
+              >
+                {printers.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.manufacturer} {p.model} ({p.nozzleDiameter.toFixed(1)}mm)
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
@@ -234,11 +258,11 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
                 <div className="flex items-center gap-1.5">
                   <h3 className="font-semibold text-[15px] text-on-surface">{activePrinter.model}</h3>
                   <span className="px-1.5 py-0.2 rounded bg-surface-container text-primary font-mono text-[10px]">
-                    {activePrinter.kinematics || 'CORE-XY'}
+                    {activePrinter.kinematics || 'CoreXY'}
                   </span>
                 </div>
                 <p className="font-mono text-[11px] text-outline">
-                  {activePrinter.firmware} • {activePrinter.mcuSerial || 'MCU #729A'}
+                  {activePrinter.manufacturer} {activePrinter.firmware ? `• ${activePrinter.firmware}` : ''}
                 </p>
               </div>
             </div>
@@ -248,21 +272,21 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
           {/* Telemetry Spec Chips */}
           <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[11px]">
             <div className="p-2 rounded bg-surface-container-high flex flex-col border border-surface-container-highest">
-              <span className="text-[9px] text-outline uppercase">NOZZLE APERTURE</span>
+              <span className="text-[9px] text-outline uppercase">{t('common.nozzle')}</span>
               <span className="text-[14px] font-bold text-on-surface mt-0.5">
                 {activePrinter.nozzleDiameter.toFixed(2)} <span className="text-[10px] text-secondary">mm</span>
               </span>
             </div>
             <div className="p-2 rounded bg-surface-container-high flex flex-col border border-surface-container-highest">
-              <span className="text-[9px] text-outline uppercase">BUILD VOLUME</span>
-              <span className="text-[14px] font-bold text-on-surface mt-0.5">
-                {activePrinter.buildVolumeX}³ <span className="text-[10px] text-secondary">mm</span>
+              <span className="text-[9px] text-outline uppercase">{t('common.buildVolume')}</span>
+              <span className="text-[14px] font-bold text-on-surface mt-0.5 truncate">
+                {activePrinter.buildVolumeX}×{activePrinter.buildVolumeY}×{activePrinter.buildVolumeZ}
               </span>
             </div>
             <div className="p-2 rounded bg-surface-container-high flex flex-col border border-surface-container-highest">
-              <span className="text-[9px] text-outline uppercase">FIRMWARE OS</span>
+              <span className="text-[9px] text-outline uppercase">{t('common.firmware')}</span>
               <span className="text-[14px] font-bold text-primary mt-0.5 truncate">
-                v1.2.8 <span className="text-[10px] text-secondary">KLP</span>
+                {activePrinter.firmware || t('common.notInformed')}
               </span>
             </div>
           </div>
@@ -272,10 +296,10 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
             <button
               type="button"
               onClick={onAddNewPrinter}
-              className="h-10 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container text-secondary font-semibold text-[13px] flex items-center justify-center gap-1 active:scale-[0.98] transition-transform border border-outline-variant/30 flex-1"
+              className="h-11 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-semibold text-[13px] flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-primary/30 hover:border-primary shadow-sm flex-1"
             >
               <span className="material-symbols-outlined text-[18px]">add_circle</span>
-              <span>{t('calibrate.addNew')}</span>
+              <span>{t('calibrate.addNewPrinter')}</span>
             </button>
           </div>
         </div>
@@ -300,6 +324,26 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
 
         {/* Selected Filament Details */}
         <div className="p-3 rounded-lg bg-surface-container-highest border border-surface-container-high flex flex-col gap-3">
+          {/* Quick Filament Switcher if multiple filaments exist */}
+          {filaments && filaments.length > 1 && (
+            <div className="flex flex-col gap-1 pb-1 border-b border-surface-container-high/60">
+              <label className="font-mono text-[10px] text-outline uppercase font-semibold">
+                {t('calibrate.selectFilament')}
+              </label>
+              <select
+                value={activeFilament.id}
+                onChange={(e) => onSelectFilament(e.target.value)}
+                className="w-full h-10 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[12px] text-on-surface focus:outline-none focus:border-primary"
+              >
+                {filaments.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.brand} {f.name} ({f.material} - {f.colorName})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div
@@ -316,7 +360,7 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
                   </span>
                 </div>
                 <p className="font-mono text-[11px] text-outline">
-                  {activeFilament.colorName} • Batch Lot {activeFilament.batchLot || '#MP-2024'}
+                  {activeFilament.colorName} • {activeFilament.material}
                 </p>
               </div>
             </div>
@@ -328,19 +372,19 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
 
           <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[11px]">
             <div className="p-2 rounded bg-surface-container-high flex flex-col border border-surface-container-highest">
-              <span className="text-[9px] text-outline uppercase">DIAMETER</span>
+              <span className="text-[9px] text-outline uppercase">{t('common.diameter')}</span>
               <span className="text-[14px] font-bold text-on-surface mt-0.5">
                 {activeFilament.diameter.toFixed(2)} <span className="text-[10px] text-outline">mm</span>
               </span>
             </div>
             <div className="p-2 rounded bg-surface-container-high flex flex-col border border-surface-container-highest">
-              <span className="text-[9px] text-outline uppercase">HOTEND BAND</span>
+              <span className="text-[9px] text-outline uppercase">{t('filament.nozzleTemp')}</span>
               <span className="text-[14px] font-bold text-secondary mt-0.5">
                 {activeFilament.recommendedNozzleTempMin}-{activeFilament.recommendedNozzleTempMax} <span className="text-[10px] text-outline">°C</span>
               </span>
             </div>
             <div className="p-2 rounded bg-surface-container-high flex flex-col border border-surface-container-highest">
-              <span className="text-[9px] text-outline uppercase">BED SURFACE</span>
+              <span className="text-[9px] text-outline uppercase">{t('filament.bedTemp')}</span>
               <span className="text-[14px] font-bold text-on-surface mt-0.5">
                 {activeFilament.recommendedBedTemp} <span className="text-[10px] text-outline">°C</span>
               </span>
@@ -351,10 +395,10 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
             <button
               type="button"
               onClick={onAddNewFilament}
-              className="h-10 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container text-secondary font-semibold text-[13px] flex items-center justify-center gap-1 active:scale-[0.98] transition-transform border border-outline-variant/30 flex-1"
+              className="h-11 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container text-secondary font-semibold text-[13px] flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-secondary/30 hover:border-secondary shadow-sm flex-1"
             >
               <span className="material-symbols-outlined text-[18px]">add_box</span>
-              <span>{t('calibrate.registerFilament')}</span>
+              <span>{t('calibrate.addNewFilament')}</span>
             </button>
           </div>
         </div>
@@ -499,7 +543,7 @@ export const CalibrateWorkflowView: React.FC<CalibrateWorkflowViewProps> = ({
               <span>{activePrinter.model} • {activeFilament.name}</span>
             </div>
             <span className="font-mono text-[11px] text-primary font-bold">
-              {readyPercent}% READY
+              {readyPercent}% {t('calibrate.readyPercent')}
             </span>
           </div>
 

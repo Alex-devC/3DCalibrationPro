@@ -44,7 +44,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
   const [newBrand, setNewBrand] = useState('');
   const [newMaterial, setNewMaterial] = useState<'PLA' | 'PETG' | 'ABS' | 'ASA' | 'TPU' | 'PC'>('PETG');
   const [newColorHex, setNewColorHex] = useState('#00b4d8');
-  const [newColorName, setNewColorName] = useState('Signal Blue');
+  const [newColorName, setNewColorName] = useState('Azul Sinal');
   const [newNozzleMin, setNewNozzleMin] = useState(240);
   const [newNozzleMax, setNewNozzleMax] = useState(255);
   const [newBedTemp, setNewBedTemp] = useState(80);
@@ -63,10 +63,10 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
       buildVolumeX: newBuildVolume,
       buildVolumeY: newBuildVolume,
       buildVolumeZ: newBuildVolume,
-      firmware: 'Klipper Compatible',
-      mcuSerial: `MCU #${Math.floor(Math.random() * 9000 + 1000)}`,
-      notes: 'Custom calibrated workstation',
+      firmware: '',
+      notes: '',
       isDefault: false,
+      source: 'user',
     };
 
     db.savePrinter(newPrinter);
@@ -92,7 +92,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
       recommendedNozzleTempMin: newNozzleMin,
       recommendedNozzleTempMax: newNozzleMax,
       recommendedBedTemp: newBedTemp,
-      notes: 'Calibrated spool',
+      notes: '',
       isDefault: false,
     };
 
@@ -105,18 +105,18 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
 
   return (
     <div className="flex flex-col w-full max-w-2xl mx-auto px-4 space-y-4 pt-2 pb-32">
-      {/* View Header */}
+      {/* Header */}
       <div className="flex items-center justify-between pt-1">
         <div>
           <span className="font-mono text-[11px] text-primary uppercase font-semibold block">
-            // HARDWARE REPOSITORY
+            // {t('printer.hardwareRepository')}
           </span>
           <h1 className="font-headline text-[22px] font-bold text-on-surface">
-            {activeTab === 'printers' ? t('nav.printers') : t('nav.filaments')}
+            {t('nav.profiles')}
           </h1>
         </div>
 
-        {/* Tab Switcher */}
+        {/* Tab Switcher Pills */}
         <div className="flex items-center p-1 rounded-lg bg-surface-container border border-surface-container-high font-mono text-[11px]">
           <button
             type="button"
@@ -148,7 +148,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[11px] text-outline uppercase tracking-wider">
-              {printers.length} MACHINES CONFIGURED
+              {t('printer.machinesConfigured', { count: printers.length })}
             </span>
             <button
               type="button"
@@ -156,7 +156,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
               className="h-9 px-3 rounded-lg bg-primary-container text-on-primary-container font-semibold text-[12px] flex items-center gap-1 active:scale-95 transition-all shadow-sm"
             >
               <span className="material-symbols-outlined text-[16px]">add</span>
-              <span>+ Add Machine</span>
+              <span>{t('printer.addNew')}</span>
             </button>
           </div>
 
@@ -183,12 +183,12 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                           <h3 className="font-semibold text-[15px] text-on-surface">{printer.model}</h3>
                           {isActive && (
                             <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono text-[10px] font-bold">
-                              ACTIVE RIG
+                              {t('printer.activeRig')}
                             </span>
                           )}
                         </div>
                         <p className="font-mono text-[11px] text-on-surface-variant">
-                          {printer.kinematics} • {printer.firmware}
+                          {printer.manufacturer} • {printer.kinematics}
                         </p>
                       </div>
                     </div>
@@ -198,22 +198,22 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                       </span>
                     ) : (
                       <span className="text-[12px] text-secondary font-mono hover:underline">
-                        Set Active
+                        {t('printer.setActive')}
                       </span>
                     )}
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[11px]">
                     <div className="p-2 rounded bg-surface-container-low border border-surface-container-high">
-                      <span className="text-outline uppercase text-[9px] block">NOZZLE</span>
+                      <span className="text-outline uppercase text-[9px] block">{t('common.nozzle')}</span>
                       <span className="font-semibold text-on-surface">{printer.nozzleDiameter.toFixed(1)}mm</span>
                     </div>
                     <div className="p-2 rounded bg-surface-container-low border border-surface-container-high">
-                      <span className="text-outline uppercase text-[9px] block">VOLUME</span>
+                      <span className="text-outline uppercase text-[9px] block">{t('common.buildVolume')}</span>
                       <span className="font-semibold text-on-surface">{printer.buildVolumeX}³ mm</span>
                     </div>
                     <div className="p-2 rounded bg-surface-container-low border border-surface-container-high">
-                      <span className="text-outline uppercase text-[9px] block">MATERIAL</span>
+                      <span className="text-outline uppercase text-[9px] block">{t('common.material')}</span>
                       <span className="font-semibold text-primary truncate">{printer.nozzleMaterial || 'Steel'}</span>
                     </div>
                   </div>
@@ -229,7 +229,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[11px] text-outline uppercase tracking-wider">
-              {filaments.length} SPOOLS IN WORKBENCH
+              {t('filament.spoolsInWorkbench', { count: filaments.length })}
             </span>
             <button
               type="button"
@@ -237,7 +237,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
               className="h-9 px-3 rounded-lg bg-primary-container text-on-primary-container font-semibold text-[12px] flex items-center gap-1 active:scale-95 transition-all shadow-sm"
             >
               <span className="material-symbols-outlined text-[16px]">add</span>
-              <span>+ Register Spool</span>
+              <span>{t('filament.addNew')}</span>
             </button>
           </div>
 
@@ -267,7 +267,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                           <h3 className="font-semibold text-[15px] text-on-surface">{filament.name}</h3>
                           {isActive && (
                             <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono text-[10px] font-bold">
-                              ACTIVE SPOOL
+                              {t('filament.activeSpool')}
                             </span>
                           )}
                         </div>
@@ -286,22 +286,22 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                       </span>
                     ) : (
                       <span className="text-[12px] text-secondary font-mono hover:underline">
-                        Set Active
+                        {t('filament.setActive')}
                       </span>
                     )}
                   </div>
 
                   <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[11px]">
                     <div className="p-2 rounded bg-surface-container-low border border-surface-container-high">
-                      <span className="text-outline uppercase text-[9px] block">DIAMETER</span>
+                      <span className="text-outline uppercase text-[9px] block">{t('common.diameter')}</span>
                       <span className="font-semibold text-on-surface">{filament.diameter.toFixed(2)}mm</span>
                     </div>
                     <div className="p-2 rounded bg-surface-container-low border border-surface-container-high">
-                      <span className="text-outline uppercase text-[9px] block">HOTEND</span>
+                      <span className="text-outline uppercase text-[9px] block">{t('common.hotend')}</span>
                       <span className="font-semibold text-secondary">{filament.recommendedNozzleTempMin}-{filament.recommendedNozzleTempMax}°C</span>
                     </div>
                     <div className="p-2 rounded bg-surface-container-low border border-surface-container-high">
-                      <span className="text-outline uppercase text-[9px] block">BED</span>
+                      <span className="text-outline uppercase text-[9px] block">{t('common.bed')}</span>
                       <span className="font-semibold text-on-surface">{filament.recommendedBedTemp}°C</span>
                     </div>
                   </div>
@@ -321,7 +321,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
           >
             <div className="flex items-center justify-between">
               <h3 className="font-headline text-[17px] font-bold text-on-surface">
-                {t('calibrate.addNew')}
+                {t('printer.addPrinter')}
               </h3>
               <button
                 type="button"
@@ -333,11 +333,11 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[12px] font-semibold text-on-surface">Model Name</label>
+              <label className="block text-[12px] font-semibold text-on-surface">{t('printer.model')}</label>
               <input
                 type="text"
                 required
-                placeholder="e.g. Flashforge AD5X, Bambu X1-Carbon, Ender 3"
+                placeholder="Ex: Flashforge AD5X, Bambu X1-Carbon, Ender 3"
                 value={newModel}
                 onChange={(e) => setNewModel(e.target.value)}
                 className="w-full h-11 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[13px] text-on-surface focus:outline-none focus:border-primary"
@@ -346,24 +346,24 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Manufacturer</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('printer.manufacturer')}</label>
                 <input
                   type="text"
-                  placeholder="e.g. Flashforge"
+                  placeholder="Ex: Flashforge"
                   value={newManufacturer}
                   onChange={(e) => setNewManufacturer(e.target.value)}
                   className="w-full h-11 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[13px] text-on-surface focus:outline-none focus:border-primary"
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Nozzle (mm)</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('printer.nozzleDiameter')}</label>
                 <select
                   value={newNozzle}
                   onChange={(e) => setNewNozzle(parseFloat(e.target.value))}
                   className="w-full h-11 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[13px] text-on-surface focus:outline-none focus:border-primary"
                 >
                   <option value={0.2}>0.2 mm</option>
-                  <option value={0.4}>0.4 mm (Standard)</option>
+                  <option value={0.4}>0.4 mm</option>
                   <option value={0.6}>0.6 mm</option>
                   <option value={0.8}>0.8 mm</option>
                 </select>
@@ -372,7 +372,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Kinematics</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('printer.kinematics')}</label>
                 <select
                   value={newKinematics}
                   onChange={(e) => setNewKinematics(e.target.value as any)}
@@ -384,7 +384,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Build Volume (mm³)</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('printer.buildVolume')}</label>
                 <input
                   type="number"
                   value={newBuildVolume}
@@ -422,7 +422,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
           >
             <div className="flex items-center justify-between">
               <h3 className="font-headline text-[17px] font-bold text-on-surface">
-                {t('calibrate.registerFilament')}
+                {t('filament.addFilament')}
               </h3>
               <button
                 type="button"
@@ -434,11 +434,11 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
             </div>
 
             <div className="space-y-2">
-              <label className="block text-[12px] font-semibold text-on-surface">Spool Name</label>
+              <label className="block text-[12px] font-semibold text-on-surface">{t('filament.name')}</label>
               <input
                 type="text"
                 required
-                placeholder="e.g. Maxprint PETG, PolyLite PLA Pro"
+                placeholder="Ex: Maxprint PETG, PolyLite PLA Pro"
                 value={newFilamentName}
                 onChange={(e) => setNewFilamentName(e.target.value)}
                 className="w-full h-11 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[13px] text-on-surface focus:outline-none focus:border-primary"
@@ -447,7 +447,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Material Type</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('filament.material')}</label>
                 <select
                   value={newMaterial}
                   onChange={(e) => setNewMaterial(e.target.value as any)}
@@ -462,10 +462,10 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                 </select>
               </div>
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Brand</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('filament.brand')}</label>
                 <input
                   type="text"
-                  placeholder="e.g. Maxprint"
+                  placeholder="Ex: Maxprint"
                   value={newBrand}
                   onChange={(e) => setNewBrand(e.target.value)}
                   className="w-full h-11 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[13px] text-on-surface focus:outline-none focus:border-primary"
@@ -475,17 +475,17 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Color Spec Name</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('filament.colorName')}</label>
                 <input
                   type="text"
-                  placeholder="e.g. Signal Blue"
+                  placeholder="Ex: Preto, Signal Blue"
                   value={newColorName}
                   onChange={(e) => setNewColorName(e.target.value)}
                   className="w-full h-11 px-3 rounded-lg bg-surface-container border border-surface-container-highest font-mono text-[13px] text-on-surface focus:outline-none focus:border-primary"
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-semibold text-on-surface">Color Palette</label>
+                <label className="block text-[12px] font-semibold text-on-surface">{t('filament.colorHex')}</label>
                 <div className="flex items-center gap-2 h-11">
                   <input
                     type="color"
@@ -500,7 +500,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
 
             <div className="grid grid-cols-3 gap-2 font-mono text-[11px]">
               <div>
-                <label className="block text-[11px] font-semibold text-on-surface">Nozzle Min °C</label>
+                <label className="block text-[11px] font-semibold text-on-surface">{t('filament.nozzleMin')}</label>
                 <input
                   type="number"
                   value={newNozzleMin}
@@ -509,7 +509,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-semibold text-on-surface">Nozzle Max °C</label>
+                <label className="block text-[11px] font-semibold text-on-surface">{t('filament.nozzleMax')}</label>
                 <input
                   type="number"
                   value={newNozzleMax}
@@ -518,7 +518,7 @@ export const HardwareManagerView: React.FC<HardwareManagerViewProps> = ({
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-semibold text-on-surface">Bed °C</label>
+                <label className="block text-[11px] font-semibold text-on-surface">{t('filament.bedTemp')}</label>
                 <input
                   type="number"
                   value={newBedTemp}

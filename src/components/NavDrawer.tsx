@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logo } from './Logo.tsx';
 import { useI18n } from '../i18n/I18nContext.tsx';
-import { PrinterProfile, FilamentProfile } from '../types/index.ts';
+import { PrinterProfile, FilamentProfile, SlicerProfile } from '../types/index.ts';
 
 interface NavDrawerProps {
   isOpen: boolean;
@@ -10,6 +10,7 @@ interface NavDrawerProps {
   onSelectView: (view: string) => void;
   activePrinter: PrinterProfile;
   activeFilament: FilamentProfile;
+  activeSlicer?: SlicerProfile;
 }
 
 export const NavDrawer: React.FC<NavDrawerProps> = ({
@@ -19,6 +20,7 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
   onSelectView,
   activePrinter,
   activeFilament,
+  activeSlicer,
 }) => {
   const { t } = useI18n();
 
@@ -71,7 +73,7 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
 
         {/* Navigation Link Groups */}
         <div className="flex-1 overflow-y-auto p-4 space-y-5">
-          {/* Group 1: Navigation */}
+          {/* Group 1: PAINEL */}
           <div className="space-y-1">
             <span className="font-mono text-[11px] text-outline uppercase tracking-wider px-2">
               {t('nav.navigation')}
@@ -86,11 +88,11 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
               }`}
             >
               <span className="material-symbols-outlined text-[20px] text-primary">grid_view</span>
-              {t('nav.dashboard')}
+              <span>{t('nav.dashboard')}</span>
             </button>
           </div>
 
-          {/* Group 2: Calibrations */}
+          {/* Group 2: CALIBRAÇÕES */}
           <div className="space-y-1">
             <span className="font-mono text-[11px] text-outline uppercase tracking-wider px-2">
               {t('nav.calibrations')}
@@ -104,8 +106,8 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
                   : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
               }`}
             >
-              <span className="material-symbols-outlined text-[20px] text-secondary">architecture</span>
-              {t('nav.calibrate')}
+              <span className="material-symbols-outlined text-[20px] text-secondary">tune</span>
+              <span>{t('nav.newCalibration')}</span>
             </button>
             <button
               type="button"
@@ -116,12 +118,12 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
                   : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
               }`}
             >
-              <span className="material-symbols-outlined text-[20px] text-secondary">tune</span>
-              {t('nav.master')}
+              <span className="material-symbols-outlined text-[20px] text-secondary">layers</span>
+              <span>{t('nav.masterProfile')}</span>
             </button>
           </div>
 
-          {/* Group 3: Profiles */}
+          {/* Group 3: PERFIS */}
           <div className="space-y-1">
             <span className="font-mono text-[11px] text-outline uppercase tracking-wider px-2">
               {t('nav.profiles')}
@@ -129,42 +131,61 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
             <button
               type="button"
               onClick={() => handleNav('printers')}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left font-medium text-[14px] text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left font-medium text-[14px] transition-colors ${
+                currentView === 'printers'
+                  ? 'bg-surface-container text-primary font-semibold border-l-2 border-primary'
+                  : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+              }`}
             >
               <span className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-[20px] text-outline">print</span>
-                <span className="truncate max-w-[130px]">{activePrinter.model}</span>
+                <span>{t('nav.printers')}</span>
               </span>
-              <span className="font-mono text-[10px] text-primary bg-primary/10 px-1.5 py-0.5 rounded">
-                {t('common.active')}
+              <span className="font-mono text-[10px] text-primary bg-primary/10 px-1.5 py-0.5 rounded truncate max-w-[100px]">
+                {activePrinter.model}
               </span>
             </button>
 
             <button
               type="button"
               onClick={() => handleNav('filaments')}
-              className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left font-medium text-[14px] text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left font-medium text-[14px] transition-colors ${
+                currentView === 'filaments'
+                  ? 'bg-surface-container text-primary font-semibold border-l-2 border-primary'
+                  : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+              }`}
             >
               <span className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-[20px] text-outline">grain</span>
-                <span className="truncate max-w-[130px]">{activeFilament.name}</span>
+                <span>{t('nav.filaments')}</span>
               </span>
-              <span className="font-mono text-[10px] text-outline">
-                {activePrinter.nozzleDiameter.toFixed(1)}mm
+              <span className="font-mono text-[10px] text-secondary bg-secondary/10 px-1.5 py-0.5 rounded truncate max-w-[100px]">
+                {activeFilament.name}
               </span>
             </button>
 
             <button
               type="button"
               onClick={() => handleNav('slicers')}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left font-medium text-[14px] text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-left font-medium text-[14px] transition-colors ${
+                currentView === 'slicers'
+                  ? 'bg-surface-container text-primary font-semibold border-l-2 border-primary'
+                  : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+              }`}
             >
-              <span className="material-symbols-outlined text-[20px] text-outline">data_object</span>
-              {t('nav.slicers')} (Flash / Orca / Bambu)
+              <span className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-[20px] text-outline">data_object</span>
+                <span>{t('nav.slicers')}</span>
+              </span>
+              {activeSlicer && (
+                <span className="font-mono text-[10px] text-outline bg-surface-container-highest px-1.5 py-0.5 rounded truncate max-w-[90px]">
+                  {activeSlicer.name}
+                </span>
+              )}
             </button>
           </div>
 
-          {/* Group 4: Logs & Data */}
+          {/* Group 4: REGISTROS E DADOS */}
           <div className="space-y-1">
             <span className="font-mono text-[11px] text-outline uppercase tracking-wider px-2">
               {t('nav.logsAndData')}
@@ -179,7 +200,7 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
               }`}
             >
               <span className="material-symbols-outlined text-[20px] text-outline">history</span>
-              {t('nav.history')}
+              <span>{t('nav.history')}</span>
             </button>
             <button
               type="button"
@@ -191,7 +212,7 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
               }`}
             >
               <span className="material-symbols-outlined text-[20px] text-outline">settings</span>
-              {t('nav.settings')}
+              <span>{t('nav.settings')}</span>
             </button>
           </div>
         </div>
@@ -199,8 +220,8 @@ export const NavDrawer: React.FC<NavDrawerProps> = ({
         {/* Drawer Footer Ad / Sponsor Reserve */}
         <div className="p-4 border-t border-surface-container-high">
           <div className="h-12 w-full rounded bg-surface-container-high px-3 flex items-center justify-between font-mono text-[11px] text-outline">
-            <span>AD RESERVE • BENCHMARK</span>
-            <span className="text-primary font-mono text-[11px]">SPONSORED</span>
+            <span>{t('dashboard.nonIntrusiveReserve')}</span>
+            <span className="text-primary font-mono text-[11px]">{t('common.sponsored')}</span>
           </div>
         </div>
       </aside>

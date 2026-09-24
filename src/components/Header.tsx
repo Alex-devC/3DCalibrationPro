@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   type="button"
                   onClick={onOpenRigSwitcher}
-                  title="Switch Active Printer and Filament Rig"
+                  title={t('rigSwitcher.title')}
                   className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-surface-container-high text-secondary hover:text-primary hover:bg-surface-container-highest transition-colors font-mono text-[11px] border border-outline-variant/40"
                 >
                   <span className="material-symbols-outlined text-[13px]">precision_manufacturing</span>
@@ -86,13 +86,13 @@ export const Header: React.FC<HeaderProps> = ({
             className="h-10 px-3.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary-container font-semibold text-[13px] flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,180,216,0.3)] active:scale-95 transition-all"
           >
             <span className="material-symbols-outlined text-[18px]">tune</span>
-            <span className="hidden xs:inline">+ Calibrate</span>
+            <span className="hidden xs:inline">{t('nav.calibrate')}</span>
           </button>
 
           <button
             type="button"
             onClick={onOpenSettings}
-            aria-label="Settings and Operator profile"
+            aria-label={t('nav.settings')}
             className="w-10 h-10 rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-primary flex items-center justify-center border border-outline-variant/40 active:scale-95 transition-all"
           >
             <span className="material-symbols-outlined text-[20px]">settings</span>

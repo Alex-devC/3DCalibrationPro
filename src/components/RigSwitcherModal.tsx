@@ -60,7 +60,7 @@ export const RigSwitcherModal: React.FC<RigSwitcherModalProps> = ({
         {/* Slicer Section */}
         <div className="space-y-1.5">
           <span className="font-mono text-[11px] text-outline uppercase tracking-wider block">
-            SLICER ENGINE
+            {t('rigSwitcher.slicerEngine')}
           </span>
           <div className="grid grid-cols-2 gap-1.5 font-mono text-[12px]">
             {slicers.map((s) => (
@@ -86,7 +86,7 @@ export const RigSwitcherModal: React.FC<RigSwitcherModalProps> = ({
         {/* Machine Section */}
         <div className="space-y-1.5">
           <span className="font-mono text-[11px] text-outline uppercase tracking-wider block">
-            TARGET MACHINE
+            {t('rigSwitcher.targetMachine')}
           </span>
           <div className="space-y-1.5">
             {printers.map((p) => {
@@ -123,7 +123,7 @@ export const RigSwitcherModal: React.FC<RigSwitcherModalProps> = ({
         {/* Spool Section */}
         <div className="space-y-1.5">
           <span className="font-mono text-[11px] text-outline uppercase tracking-wider block">
-            LOADED SPOOL
+            {t('rigSwitcher.loadedFilament')}
           </span>
           <div className="space-y-1.5">
             {filaments.map((f) => {

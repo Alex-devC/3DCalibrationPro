@@ -69,6 +69,48 @@ class DataRepository {
     return this.getItem(KEYS.SLICERS, initialSlicers);
   }
 
+  public getActiveSlicer(): SlicerProfile {
+    const settings = this.getSettings();
+    const slicers = this.getSlicers();
+    return slicers.find((s) => s.id === settings.activeSlicerId) || slicers[0] || initialSlicers[0];
+  }
+
+  public saveSlicer(slicer: SlicerProfile): void {
+    const slicers = this.getSlicers();
+    const index = slicers.findIndex((s) => s.id === slicer.id);
+    if (index >= 0) {
+      slicers[index] = slicer;
+    } else {
+      slicers.push(slicer);
+    }
+    this.setItem(KEYS.SLICERS, slicers);
+  }
+
+  public canDeleteSlicer(id: string): { canDelete: boolean; reason?: string } {
+    const slicers = this.getSlicers();
+    const target = slicers.find((s) => s.id === id);
+    if (!target) return { canDelete: false, reason: 'Slicer não encontrado.' };
+    if (target.isLocked) {
+      return { canDelete: false, reason: 'Fatiadores padrão do sistema não podem ser excluídos.' };
+    }
+    if (slicers.length <= 1) {
+      return { canDelete: false, reason: 'Você precisa manter pelo menos um fatiador cadastrado.' };
+    }
+    const settings = this.getSettings();
+    if (settings.activeSlicerId === id) {
+      return { canDelete: false, reason: 'Não é possível excluir o fatiador atualmente ativo. Defina outro fatiador como ativo primeiro.' };
+    }
+    return { canDelete: true };
+  }
+
+  public deleteSlicer(id: string): boolean {
+    const check = this.canDeleteSlicer(id);
+    if (!check.canDelete) return false;
+    const slicers = this.getSlicers().filter((s) => s.id !== id);
+    this.setItem(KEYS.SLICERS, slicers);
+    return true;
+  }
+
   // Printers
   public getPrinters(): PrinterProfile[] {
     return this.getItem(KEYS.PRINTERS, initialPrinters);
@@ -91,9 +133,24 @@ class DataRepository {
     this.setItem(KEYS.PRINTERS, printers);
   }
 
-  public deletePrinter(id: string): void {
+  public canDeletePrinter(id: string): { canDelete: boolean; reason?: string } {
+    const printers = this.getPrinters();
+    if (printers.length <= 1) {
+      return { canDelete: false, reason: 'Você precisa manter pelo menos uma impressora cadastrada.' };
+    }
+    const settings = this.getSettings();
+    if (settings.activePrinterId === id) {
+      return { canDelete: false, reason: 'Não é possível excluir a impressora atualmente ativa. Defina outra impressora como ativa primeiro.' };
+    }
+    return { canDelete: true };
+  }
+
+  public deletePrinter(id: string): boolean {
+    const check = this.canDeletePrinter(id);
+    if (!check.canDelete) return false;
     const printers = this.getPrinters().filter((p) => p.id !== id);
     this.setItem(KEYS.PRINTERS, printers);
+    return true;
   }
 
   // Filaments
@@ -118,9 +175,24 @@ class DataRepository {
     this.setItem(KEYS.FILAMENTS, filaments);
   }
 
-  public deleteFilament(id: string): void {
+  public canDeleteFilament(id: string): { canDelete: boolean; reason?: string } {
+    const filaments = this.getFilaments();
+    if (filaments.length <= 1) {
+      return { canDelete: false, reason: 'Você precisa manter pelo menos um filamento cadastrado.' };
+    }
+    const settings = this.getSettings();
+    if (settings.activeFilamentId === id) {
+      return { canDelete: false, reason: 'Não é possível excluir o filamento atualmente ativo. Defina outro filamento como ativo primeiro.' };
+    }
+    return { canDelete: true };
+  }
+
+  public deleteFilament(id: string): boolean {
+    const check = this.canDeleteFilament(id);
+    if (!check.canDelete) return false;
     const filaments = this.getFilaments().filter((f) => f.id !== id);
     this.setItem(KEYS.FILAMENTS, filaments);
+    return true;
   }
 
   // Calibration Items

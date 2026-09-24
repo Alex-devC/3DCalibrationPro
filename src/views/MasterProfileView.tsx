@@ -88,7 +88,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
     }
   };
 
-  const handleCopyText = (text: string, label = 'Copiado!') => {
+  const handleCopyText = (text: string, label = t('common.copied')) => {
     navigator.clipboard?.writeText(text);
     showToast(label);
   };
@@ -193,7 +193,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <span className="material-symbols-outlined text-[18px] text-tertiary flex-shrink-0">layers</span>
               <div className="truncate">
                 <div className="text-[9px] text-outline uppercase">{t('master.confidenceScore')}</div>
-                <div className="font-semibold text-[13px] text-primary">{masterProfile.confidenceScore}% Calibrated</div>
+                <div className="font-semibold text-[13px] text-primary">{masterProfile.confidenceScore}% {t('master.calibratedTag')}</div>
               </div>
             </div>
           </div>
@@ -213,9 +213,9 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <div className="bg-surface-container-highest rounded-full"></div>
             </div>
             <div className="flex justify-between font-mono text-[10px] text-outline pt-0.5">
-              <span>4 Calibrated</span>
-              <span>1 Manual</span>
-              <span>1 Pending</span>
+              <span>4 {t('master.calibratedTag')}</span>
+              <span>1 {t('master.manualTag')}</span>
+              <span>1 {t('master.pendingTag')}</span>
             </div>
           </div>
         </div>
@@ -253,7 +253,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <span className="font-mono text-[11px] text-on-surface-variant">TEMP // EXTRUSION & BED</span>
             </div>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container text-[#4ade80] font-mono text-[10px] font-medium border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>CALIBRATED
+              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>{t('master.calibratedTag')}
             </span>
           </div>
           <div className="flex items-baseline justify-between">
@@ -276,7 +276,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               className="h-9 px-3 rounded bg-surface-container text-primary font-semibold text-[13px] flex items-center gap-1 active:scale-95 transition-transform border border-primary/20"
             >
               <span className="material-symbols-outlined text-[16px]">edit</span>
-              <span>Edit</span>
+              <span>{t('common.edit')}</span>
             </button>
           </div>
           <div className="flex justify-between font-mono text-[10px] text-outline pt-0.5">
@@ -293,7 +293,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <span className="font-mono text-[11px] text-on-surface-variant">FLOW // EXTRUSION MULTIPLIER</span>
             </div>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container text-[#4ade80] font-mono text-[10px] font-medium border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>CALIBRATED
+              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>{t('master.calibratedTag')}
             </span>
           </div>
           <div className="flex items-baseline justify-between">
@@ -316,7 +316,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               className="h-9 px-3 rounded bg-surface-container text-primary font-semibold text-[13px] flex items-center gap-1 active:scale-95 transition-transform border border-primary/20"
             >
               <span className="material-symbols-outlined text-[16px]">edit</span>
-              <span>Edit</span>
+              <span>{t('common.edit')}</span>
             </button>
           </div>
           <div className="flex justify-between font-mono text-[10px] text-outline pt-0.5">
@@ -333,7 +333,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <span className="font-mono text-[11px] text-on-surface-variant">FLOW // MAX VOLUMETRIC</span>
             </div>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container text-[#4ade80] font-mono text-[10px] font-medium border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>CALIBRATED
+              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>{t('master.calibratedTag')}
             </span>
           </div>
           <div className="flex items-baseline justify-between">
@@ -348,7 +348,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               className="h-9 px-3 rounded bg-surface-container text-primary font-semibold text-[13px] flex items-center gap-1 active:scale-95 transition-transform border border-primary/20"
             >
               <span className="material-symbols-outlined text-[16px]">tune</span>
-              <span>Calibrate</span>
+              <span>{t('master.calibrateBtn')}</span>
             </button>
           </div>
           <div className="flex justify-between font-mono text-[10px] text-outline pt-0.5">
@@ -365,7 +365,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <span className="font-mono text-[11px] text-on-surface-variant">RETRACT // SEAM RECOVERY</span>
             </div>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container text-[#4ade80] font-mono text-[10px] font-medium border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>CALIBRATED
+              <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]"></span>{t('master.calibratedTag')}
             </span>
           </div>
           <div className="flex items-baseline justify-between">
@@ -388,7 +388,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               className="h-9 px-3 rounded bg-surface-container text-primary font-semibold text-[13px] flex items-center gap-1 active:scale-95 transition-transform border border-primary/20"
             >
               <span className="material-symbols-outlined text-[16px]">edit</span>
-              <span>Edit</span>
+              <span>{t('common.edit')}</span>
             </button>
           </div>
           <div className="flex justify-between font-mono text-[10px] text-outline pt-0.5">
@@ -405,7 +405,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <span className="font-mono text-[11px] text-on-surface-variant">CORNER // PRESSURE ADVANCE</span>
             </div>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container text-[#fbbf24] font-mono text-[10px] font-medium border border-amber-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24]"></span>MANUAL OVERRIDE
+              <span className="w-1.5 h-1.5 rounded-full bg-[#fbbf24]"></span>{t('master.manualOverride')}
             </span>
           </div>
           <div className="flex items-baseline justify-between">
@@ -426,7 +426,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               className="h-9 px-3 rounded bg-surface-container text-primary font-semibold text-[13px] flex items-center gap-1 active:scale-95 transition-transform border border-primary/20"
             >
               <span className="material-symbols-outlined text-[16px]">edit</span>
-              <span>Edit</span>
+              <span>{t('common.edit')}</span>
             </button>
           </div>
           <div className="flex justify-between font-mono text-[10px] text-outline pt-0.5">
@@ -443,7 +443,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               <span className="font-mono text-[11px] text-outline">COOLING // PART FAN CURVE</span>
             </div>
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-mono text-[10px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-outline"></span>NOT CALIBRATED
+              <span className="w-1.5 h-1.5 rounded-full bg-outline"></span>{t('calibrate.notCalibrated')}
             </span>
           </div>
           <div className="flex items-baseline justify-between">
@@ -457,12 +457,12 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
               className="h-9 px-3 rounded bg-primary text-on-primary font-semibold text-[13px] flex items-center gap-1 active:scale-95 transition-transform shadow"
             >
               <span className="material-symbols-outlined text-[16px]">play_arrow</span>
-              <span>+ Calibrate</span>
+              <span>{t('master.calibrateBtn')}</span>
             </button>
           </div>
           <div className="flex justify-between font-mono text-[10px] text-outline pt-0.5">
             <span>Bridging & overhang threshold test</span>
-            <span>Awaiting run</span>
+            <span>{t('master.pendingTag')}</span>
           </div>
         </div>
       </div>
@@ -826,7 +826,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
           <div className="w-full max-w-sm rounded-xl bg-surface-container-high border border-surface-container-highest shadow-2xl p-4 space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <span className="font-mono text-[10px] text-outline uppercase">QUICK TWEAK</span>
+                <span className="font-mono text-[10px] text-outline uppercase">{t('common.edit')}</span>
                 <h3 className="font-headline text-[17px] font-bold text-on-surface">
                   {editingParam.title}
                 </h3>
@@ -842,7 +842,7 @@ export const MasterProfileView: React.FC<MasterProfileViewProps> = ({
 
             <div className="space-y-2">
               <label className="block font-mono text-[11px] text-on-surface-variant uppercase">
-                CALIBRATED VALUE
+                {t('common.value')}
               </label>
               <div className="flex items-center gap-2">
                 <button

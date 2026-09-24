@@ -21,7 +21,8 @@ import { MvsCalibrationView } from './views/MvsCalibrationView.tsx';
 import { MasterProfileView } from './views/MasterProfileView.tsx';
 import { HistoryView } from './views/HistoryView.tsx';
 import { SettingsView } from './views/SettingsView.tsx';
-import { HardwareManagerView } from './views/HardwareManagerView.tsx';
+import { PrintersManagerView } from './views/PrintersManagerView.tsx';
+import { FilamentsManagerView } from './views/FilamentsManagerView.tsx';
 import { SlicersManagerView } from './views/SlicersManagerView.tsx';
 
 function MainApp() {
@@ -30,8 +31,14 @@ function MainApp() {
 
   // App Navigation State
   const [currentView, setCurrentView] = useState<string>('dashboard');
+  const [previousView, setPreviousView] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isRigSwitcherOpen, setIsRigSwitcherOpen] = useState<boolean>(false);
+
+  const navigateTo = (view: string) => {
+    setPreviousView(currentView);
+    setCurrentView(view);
+  };
 
   // Subscribe to reactive database changes
   useEffect(() => {
@@ -61,7 +68,7 @@ function MainApp() {
       case 'calibrate':
         return t('nav.calibrate');
       case 'mvs-test':
-        return 'MVS Test';
+        return t('tests.mvs.shortName');
       case 'master':
         return t('nav.master');
       case 'history':
@@ -125,6 +132,7 @@ function MainApp() {
         onSelectView={(v) => setCurrentView(v)}
         activePrinter={activePrinter}
         activeFilament={activeFilament}
+        activeSlicer={activeSlicer}
       />
 
       {/* Quick Rig Switcher Modal */}
@@ -151,6 +159,9 @@ function MainApp() {
             activeSlicer={activeSlicer}
             calibrationItems={calibrationItems}
             recentHistory={resultsHistory}
+            userName={settings.userName}
+            totalPrintersCount={printers.length}
+            totalFilamentsCount={filaments.length}
             onStartCalibration={() => setCurrentView('calibrate')}
             onOpenTest={handleOpenTest}
             onSwitchRig={() => setIsRigSwitcherOpen(true)}
@@ -167,11 +178,11 @@ function MainApp() {
             printers={printers}
             activePrinter={activePrinter}
             onSelectPrinter={handleSelectPrinter}
-            onAddNewPrinter={() => setCurrentView('printers')}
+            onAddNewPrinter={() => navigateTo('printers')}
             filaments={filaments}
             activeFilament={activeFilament}
             onSelectFilament={handleSelectFilament}
-            onAddNewFilament={() => setCurrentView('filaments')}
+            onAddNewFilament={() => navigateTo('filaments')}
             calibrationItems={calibrationItems}
             onOpenTest={handleOpenTest}
             onViewMasterProfile={() => setCurrentView('master')}
@@ -212,28 +223,22 @@ function MainApp() {
         )}
 
         {currentView === 'printers' && (
-          <HardwareManagerView
-            initialTab="printers"
+          <PrintersManagerView
             printers={printers}
             activePrinter={activePrinter}
-            filaments={filaments}
-            activeFilament={activeFilament}
             onSelectPrinter={handleSelectPrinter}
-            onSelectFilament={handleSelectFilament}
             onRefresh={() => setRevision((r) => r + 1)}
+            onBackToCalibrate={previousView === 'calibrate' ? () => setCurrentView('calibrate') : undefined}
           />
         )}
 
         {currentView === 'filaments' && (
-          <HardwareManagerView
-            initialTab="filaments"
-            printers={printers}
-            activePrinter={activePrinter}
+          <FilamentsManagerView
             filaments={filaments}
             activeFilament={activeFilament}
-            onSelectPrinter={handleSelectPrinter}
             onSelectFilament={handleSelectFilament}
             onRefresh={() => setRevision((r) => r + 1)}
+            onBackToCalibrate={previousView === 'calibrate' ? () => setCurrentView('calibrate') : undefined}
           />
         )}
 
@@ -242,6 +247,7 @@ function MainApp() {
             slicers={slicers}
             activeSlicer={activeSlicer}
             onSelectSlicer={handleSelectSlicer}
+            onRefresh={() => setRevision((r) => r + 1)}
           />
         )}
       </main>
