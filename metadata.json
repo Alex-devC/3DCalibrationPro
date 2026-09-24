@@ -1,0 +1,6 @@
+{
+  "name": "3D Calibration Pro",
+  "description": "Professional 3D Printer Calibration and Master Profile Management Toolkit by Alex Fabiano Longo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

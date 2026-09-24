@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #0c141f;
+  --color-surface-dim: #0c141f;
+  --color-surface-bright: #323a46;
+  --color-surface-container-lowest: #070f19;
+  --color-surface-container-low: #141c27;
+  --color-surface-container: #18202b;
+  --color-surface-container-high: #232a36;
+  --color-surface-container-highest: #2d3541;
+  --color-on-surface: #dbe3f2;
+  --color-on-surface-variant: #bcc9ce;
+  --color-outline: #869398;
+  --color-outline-variant: #3d494d;
+  --color-primary: #4cd6fb;
+  --color-on-primary: #003642;
+  --color-primary-container: #00b4d8;
+  --color-on-primary-container: #00414f;
+  --color-secondary: #7bd0ff;
+  --color-on-secondary: #00354a;
+  --color-secondary-container: #00a6e0;
+  --color-tertiary: #94ccff;
+  --color-error: #ffb4ab;
+  --font-headline: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #0c141f;
+    color: #dbe3f2;
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Custom scrollbar and utilities */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0c141f;
+}
+::-webkit-scrollbar-thumb {
+  background: #232a36;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4cd6fb;
+}
+
+.font-headline {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono-tech {
+  font-family: 'JetBrains Mono', monospace;
+}

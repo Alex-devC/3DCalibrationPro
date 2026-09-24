@@ -1,0 +1,17 @@
+{
+  "short_name": "3D Cal Pro",
+  "name": "3D Calibration Pro",
+  "description": "Professional 3D Printer Calibration & Slicer Profile Toolkit by Alex Fabiano Longo",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0c141f",
+  "background_color": "#0c141f",
+  "orientation": "portrait-primary"
+}
